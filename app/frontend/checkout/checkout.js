@@ -3,7 +3,7 @@ angular.module('frontend-module.checkout', [])
         $stateProvider.state('frontend.checkout', {
             url: '/checkout',
             templateUrl: 'frontend/checkout/checkout.html',
-            userNotAuthenticated: false,
+            userNotAuthenticated: false
 
 
         });

@@ -1,0 +1,48 @@
+<div class="box box-success">
+    <div class="box-header with-border">
+        <h3 class="box-title">
+            <p class="message pull-right">
+                <a ui-sref="frontend.products.view({id:item.id})" class="name">
+
+                    {{item.name}}
+
+                </a>
+
+
+            </p>
+        </h3>
+
+        <div class="box-tools pull-right">
+            <small class="text-muted "><i class="fa fa-clock-o"></i>
+                {{item.createdAt}}
+            </small>
+            <button ng-show="!actualitiesDisabled" ng-click="actualitiesDisabled=true" class="btn btn-box-tool"
+                    data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button ng-show="actualitiesDisabled" ng-click="actualitiesDisabled=false" class="btn btn-box-tool"
+                    data-widget="remove"><i class="glyphicon glyphicon-new-window"></i></button>
+        </div>
+    </div>
+
+    <div ng-if="!actualitiesDisabled" class="box-body small-body-content" style="display: block;">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="row">
+                    <div class="col-md-5">
+                        <img class="small-img" ng-src="frontend/products/products-list/img/{{product.name}}.png">
+                    </div>
+                    <div class="col-md-7">
+                        <p class="message">
+                            {{item.shortDescription |cut:true:100}}<a
+                                ui-sref="frontend.products.view({id:product.id})">Read more ..</a>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="box-footer" style="display: block;">
+    </div>
+</div>

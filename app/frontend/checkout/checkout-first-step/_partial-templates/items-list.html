@@ -1,0 +1,62 @@
+<div class="box box-default">
+    <div class="box-header with-border">
+        <h3 class="box-title">Basket</h3>
+
+        <div class="box-tools pull-right">
+            <button ng-show="!listPanelDisabled" ng-click="listPanelDisabled=true" class="btn btn-box-tool"
+                    data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button ng-show="listPanelDisabled" ng-click="listPanelDisabled=false" class="btn btn-box-tool"
+                    data-widget="remove"><i class="glyphicon glyphicon-new-window"></i></button>
+        </div>
+    </div>
+
+    <div ng-if="!listPanelDisabled" class="box-body" style="display: block;">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="box-body chat" id="chat-pagination">
+
+
+                </div>
+                <div class="box-body chat" id="chat-box">
+
+
+                    <div class="item">
+                        <div class="row">
+                            <div class="col-md-12" ng-repeat="item in _devices">
+                                <div ng-include="'frontend/checkout/checkout-first-step/_partial-templates/product-view-box.html'"></div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="box-footer">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="box-footer" style="display: block;">
+
+        <div class="pull-left">
+            show [
+            <a ng-click="setPerPage(2)">2</a>
+            /
+            <a ng-click="setPerPage(4)">4</a>
+            /
+            <a ng-click="setPerPage(6)">6</a>
+            /
+            <a ng-click="setPerPage(12)">12</a>
+            ]
+            per page
+        </div>
+        <pagination ng-model="search.currentPage" ng-change="pageChanged()" total-items="search.totalItems"
+                    items-per-page="search.itemsPerPage"
+                    max-size="search.maxPageSize" boundary-links="search.displayPageBoundaryLinks"
+                    class="pull-right"></pagination>
+    </div>
+</div>

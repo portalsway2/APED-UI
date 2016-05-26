@@ -1,0 +1,25 @@
+<div class="box box-default">
+    <div class="box-header with-border">
+        <h3 class="box-title">Suggested brands .</h3>
+
+        <div class="box-tools pull-right">
+            <button ng-show="!actualitiesDisabled" ng-click="actualitiesDisabled=true" class="btn btn-box-tool"
+                    data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button ng-show="actualitiesDisabled" ng-click="actualitiesDisabled=false" class="btn btn-box-tool"
+                    data-widget="remove"><i class="glyphicon glyphicon-new-window"></i></button>
+        </div>
+    </div>
+
+    <div ng-if="!actualitiesDisabled" class="box-body" style="display: block;">
+        <div class="row">
+            <div class="col-md-6">
+
+            </div>
+            <div class="col-md-6">
+
+            </div>
+        </div>
+    </div>
+    <div class="box-footer" style="display: block;">
+    </div>
+</div>

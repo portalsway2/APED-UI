@@ -1,0 +1,28 @@
+<div class="row">
+    <div class="col-lg-8">
+
+    </div>
+    <div class="col-lg-4">
+
+    </div>
+</div>
+<div class="row">
+
+
+    <div class="col-lg-3" ng-repeat="shipping in _shipping">
+        <div class="small-box " ng-class="{'bg-aqua': shipping.id!=mehtodSelected.id, 'bg-yellow': shipping.id==mehtodSelected.id,}">
+            <div class="inner">
+                <h5>{{shipping.configuration}}$</h5>
+
+                <p><h4>{{shipping.name}}</h4></p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-spotify fa-fw"></i>
+            </div>
+            <a ng-click="selectShipping(shipping)" class="small-box-footer">select <i
+                    class="fa fa-arrow-circle-right"></i></a>
+        </div>
+
+    </div>
+
+</div>
