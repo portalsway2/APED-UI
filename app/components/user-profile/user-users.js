@@ -1,1 +1,1 @@
-angular.module('user-users', []);
+angular.module('user-profile', []);

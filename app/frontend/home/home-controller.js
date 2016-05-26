@@ -3,7 +3,7 @@ angular.module('frontend-module.home')
     .config(['$stateProvider', function ($stateProvider) {
         $stateProvider.state('frontend.home', {
             url: '',
-            userNotAuthenticated:true,
+            userNotAuthenticated: true,
             resolve: {
 
                 _announcementsList: [
@@ -12,7 +12,7 @@ angular.module('frontend-module.home')
                         return ContentContents.getList(
                             {
                                 'sort': '-updatedAt',
-                                expand: 'device',
+                                expand: 'device,owner',
                                 'per-page': 6,
                                 page: 1
                             }

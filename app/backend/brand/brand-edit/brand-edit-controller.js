@@ -85,7 +85,11 @@ angular.module('backend-module.brand')
                 };
                 $scope.saveBrand = function () {
 
-                    console.log($scope.brand.categories);
+
+                    for (var i = 0; i < $scope.brand.categories.length; i++) {
+                        delete($scope.brand.categories[i].images);
+                    }
+
                     $scope.brand.save().then(function () {
 
                         $state.go("backend.brand.list");

@@ -1,4 +1,4 @@
-angular.module('user-users')
+angular.module('user-profile')
     .factory('UserProfile',
         ['Restangular',
             function (Restangular) {

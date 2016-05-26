@@ -1,23 +1,40 @@
 angular.module('authentication', [])
     .run(['$rootScope', 'SettingsService', 'authorizationHeader', '$state', '$stateParams', 'AuthService', 'USER_ROLES', 'API_LOGIN_CONFIG', 'API_CONFIG', 'AUTH_EVENTS', 'Restangular', 'Session', '$window', 'growl', 'UserProfile', '$cookieStore', 'SettingsSettings',
         function ($rootScope, SettingsService, authorizationHeader, $state, $stateParams, AuthService, USER_ROLES, API_LOGIN_CONFIG, API_CONFIG, AUTH_EVENTS, Restangular, Session, $window, growl, UserProfile, $cookieStore, SettingsSettings) {
+            $rootScope.UserRolesList = [
+                {
+                    id: 1,
+                    nameRole: "User"
+                },
+                {
+                    id: 2,
+                    nameRole: "SuperUser"
+                },
+                {
+                    id: 3,
+                    nameRole: "Client"
+                },
+                {
+                    id: 4,
+                    nameRole: "Visitor"
+                }
 
+            ]
             $rootScope.logout = function () {
 
                 $rootScope.userLoged = false;
+                $rootScope.UserAccount = null;
 
-                AuthService.logout().then(function (user) {
-                    $rootScope.destroyCurrentUser();
 
-                    Restangular.requestParams.common.accessToken = null;
-                    $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
-                    $rootScope.destroyCurrentUser();
+                $rootScope.destroyCurrentUser();
+                Session.destroy();
+                Restangular.requestParams.common.accessToken = null;
+                $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
+                $rootScope.destroyCurrentUser();
 
-                    $state.transitionTo(API_LOGIN_CONFIG.loginState);
+                $state.transitionTo(API_LOGIN_CONFIG.loginState);
 
-                }, function () {
 
-                });
             };
             $rootScope.login = function (credentials) {
                 $rootScope.loginFailed = null;
@@ -42,17 +59,17 @@ angular.module('authentication', [])
                         Restangular.requestParams.common.tenantId = Session.tenantId;
 
 
-                                $rootScope.loadingMessage = false;
-                                var aHref = API_LOGIN_CONFIG.dashboardState;
-                                var hrefParams = {};
-                                if ($rootScope.historicUrl) {
+                        $rootScope.loadingMessage = false;
+                        var aHref = API_LOGIN_CONFIG.dashboardState;
+                        var hrefParams = {};
+                        if ($rootScope.historicUrl) {
 
-                                    aHref = $rootScope.historicUrl;
-                                    hrefParams = $rootScope.historicUrlParams;
-                                    $rootScope.historicUrl = null;
-                                    $rootScope.historicUrlParams = null;
-                                }
-                                $state.transitionTo(aHref, hrefParams);
+                            aHref = $rootScope.historicUrl;
+                            hrefParams = $rootScope.historicUrlParams;
+                            $rootScope.historicUrl = null;
+                            $rootScope.historicUrlParams = null;
+                        }
+                        $state.transitionTo(aHref, hrefParams);
 
 
                     } else {

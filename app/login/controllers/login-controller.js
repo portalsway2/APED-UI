@@ -11,8 +11,10 @@ angular.module('loginuser')
         ;
     }])
 
-    .controller('LoginController', ['$scope', '$rootScope', 'AUTH_EVENTS', 'AuthService', '$state', '$http', 'CustomerPassword', 'growl', '$location',
-        function ($scope, $rootScope, AUTH_EVENTS, AuthService, $state, $http, CustomerPassword, growl, $location) {
+    .controller('LoginController', ['$scope', '$rootScope', 'AUTH_EVENTS', 'AuthService', '$state', '$http', 'CustomerPassword', 'growl',
+        '$location', 'API_LOGIN_CONFIG',
+        function ($scope, $rootScope, AUTH_EVENTS, AuthService, $state, $http, CustomerPassword, growl, $location, API_LOGIN_CONFIG) {
+
             $rootScope.loginFailed = null;
             $rootScope.sendResetPasswordFailed = null;
             $rootScope.sendResetPasswordSuccess = null;
@@ -23,6 +25,11 @@ angular.module('loginuser')
                 password: ''
             };
 
+            if ($rootScope.UserAccount) {
+                if ($rootScope.UserAccount.email) {
+                    $state.transitionTo(API_LOGIN_CONFIG.dashboardState);
+                }
+            }
 
             $scope._url = location.hostname.split('.');
             $scope.tenantID = $scope._url.shift();

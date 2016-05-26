@@ -1,0 +1,103 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">List User</h1>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box-body chat" id="chat-pagination">
+            <div class="pull-left">
+                show [
+                <a ng-click="setPerPage(2)">2</a>
+                /
+                <a ng-click="setPerPage(4)">4</a>
+                /
+                <a ng-click="setPerPage(6)">6</a>
+                /
+                <a ng-click="setPerPage(12)">12</a>
+                ]
+                per page
+            </div>
+            <pagination ng-model="search.currentPage" ng-change="pageChanged()" total-items="search.totalItems"
+                        items-per-page="search.itemsPerPage"
+                        max-size="search.maxPageSize" boundary-links="search.displayPageBoundaryLinks"
+                        class="pull-right"></pagination>
+
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                List Users
+            </div>
+
+            <div class="panel-body">
+                <div class="dataTable_wrapper">
+
+                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Activation Code</th>
+                            <th class="col-sm-1"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+
+                        <tr class="gradeC" ng-repeat="user in users" ng-click="SelectUser(user.email)">
+                            <td>{{user.id}}</td>
+                            <td>{{user.firstName}}</td>
+                            <td>{{user.lastName}}</td>
+                            <td>{{user.email}}</td>
+                            <td ng-if="UserSelected==user.email">
+
+                                <select ui-select2 name="categoryId" ng-model="user.status"
+                                        class="form-control"
+
+                                        placeholder="Search Categories">
+                                    <option value=""></option>
+                                    <option value="{{ role.id }}" ng-repeat="role in UserRolesList">{{
+                                        role.nameRole }}
+                                    </option>
+                                </select>
+                            </td>
+                            <td ng-if="UserSelected!=user.email">{{getUserRole(user.status)}}</td>
+                            <td>{{user.activationCode}}</td>
+
+
+                            <td>
+                                <a ng-if="UserSelected==user.email" ng-click="user.save()" title="" data-toggle="tooltip" href=""
+                                   data-original-title="View">
+                                    <i class="fa fa-fw fa-save"></i>
+                                </a>
+                                <a ng-if="UserSelected!=user.email" title="" data-toggle="tooltip" href="" data-original-title="View">
+                                    <i class="fa fa-fw fa-eye"></i>
+                                </a>
+
+                                <a ng-if="UserSelected!=user.email" ui-sref="backend.user.edit({id:user.id})" class="update" title=""
+                                   data-toggle="tooltip" href="" data-original-title="Update">
+                                    <i class="fa fa-fw fa-pencil"></i>
+                                </a>
+                                <a ng-if="UserSelected!=user.email" class="delete" title="" data-toggle="tooltip" href=""
+                                   data-original-title="Delete">
+                                    <i class="fa fa-fw fa-trash-o"></i>
+                                </a>
+
+
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
