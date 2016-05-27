@@ -11,5 +11,36 @@
         </div>
     </div>
 </div>
+<div class="row module-header">
+    <div class="col-sm-12">
+        <div class="box box-danger ">
 
+            <ol class="breadcrumb">
+                <li class="ng-scope"><a class="ng-binding"><i class="fa fa-dashboard"></i> Checkout </a></li>
+                <li class="ng-scope"><a class="ng-binding"><i class="fa fa-dashboard"></i> Ste3p </a></li>
+                <li class="active"><a class="ng-binding">{{nameStep}}</a></li>
+
+
+            </ol>
+
+            <div class="pull-right">
+                <button ng-if="previousStep"
+                        ng-click="goPreviousStep()"
+                        type="button" class="btn btn-primary">Back
+                </button>
+                <button ng-if="nextStep"
+                        ng-click="goNextStep()"
+                        type="button" class="btn btn-success">Next
+                </button>
+                <button ng-if="confirmationStep()"
+                        ng-click="goNextStep()"
+                        type="button" class="btn btn-danger">Pay
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 <ui-view></ui-view>

@@ -6,7 +6,7 @@ angular.module('frontend-module.advertisements')
             templateUrl: 'frontend/advertisements/advertisements-view/advertisements-view.html',
             controller: 'AdvertisementsViewController',
             authenticate: true,
-            userNotAuthenticated:true,
+            userNotAuthenticated: true,
             resolve: {
                 _announcement: [
                     'ContentContents', '$stateParams', '$state',
@@ -24,38 +24,37 @@ angular.module('frontend-module.advertisements')
         });
     }])
     .controller('AdvertisementsViewController',
-        ['$scope', '$modal', '$state', '$timeout', '_announcement','growl','$rootScope',
-            function ($scope, $modal, $state, $timeout, _announcement,growl,$rootScope) {
+        ['$scope', '$modal', '$state', '$timeout', '_announcement', 'growl', '$rootScope',
+            function ($scope, $modal, $state, $timeout, _announcement, growl, $rootScope) {
 
                 $scope.announcement = _announcement.data;
 
 
-                $scope.addToBasket=function(){
+                $scope.addToBasket = function () {
 
 
-
-                var basket=getBasket();
+                    var basket = getBasket();
 
                     growl.addWarnMessage("This adds a warn message", {title: 'Warning!'});
-                    var productFound=false;
-                    for(var i=0;i<basket.listItems.length;i++){
-                        if(basket.listItems[i].id==$scope.announcement.id){
-                            productFound=true;
+                    var productFound = false;
+                    for (var i = 0; i < basket.listItems.length; i++) {
+                        if (basket.listItems[i].id == $scope.announcement.id) {
+                            productFound = true;
 
                         }
 
                     }
 
-                    if(!productFound){
+                    if (!productFound) {
                         basket.listItems.push($scope.announcement);
-                        basket.numberItems+=1;
-                        basket.totalPrice+=parseFloat($scope.announcement.price);
+                        basket.numberItems += 1;
+                        basket.totalPrice += parseFloat($scope.announcement.price);
 
                         setBasket(basket);
-                        $rootScope.basket=basket;
+                        $rootScope.basket = basket;
 
 
-                    }else{
+                    } else {
 
                     }
 
@@ -64,24 +63,25 @@ angular.module('frontend-module.advertisements')
                 };
 
 
-                 function removeBasket() {
+                function removeBasket() {
                     localStorage.removeItem("basket")
                 }
 
-                 function  getBasket() {
-                    if(localStorage.getItem("basket")){
+                function getBasket() {
+                    if (localStorage.getItem("basket")) {
                         return JSON.parse(localStorage.getItem("basket"));
-                    }else{
+                    } else {
                         return {
-                            numberItems:0,
-                            totalPrice:0,
-                            listItems:[]
+                            numberItems: 0,
+                            totalPrice: 0,
+                            listItems: []
                         }
                     }
 
                 };
 
-                 function setBasket(basket) {
+                function setBasket(basket) {
                     localStorage.setItem("basket", JSON.stringify(basket));
+                    $rootScope.basket = basket;
                 };
             }]);

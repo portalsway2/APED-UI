@@ -2,7 +2,7 @@
     <div class="box-header with-border">
         <h3 class="box-title">
             <p class="message pull-right">
-                <a ui-sref="frontend.products.view({id:item.id})" class="name">
+                <a ui-sref="frontend.advertisements.view({id:item.id})" class="name">
 
                     {{item.name}}
 
@@ -29,12 +29,12 @@
 
                 <div class="row">
                     <div class="col-md-5">
-                        <img class="small-img" ng-src="frontend/products/products-list/img/{{product.name}}.png">
+                        <img class="small-img" ng-src="frontend/advertisements/advertisements-list/img/{{product.name}}.png">
                     </div>
                     <div class="col-md-7">
                         <p class="message">
                             {{item.shortDescription |cut:true:100}}<a
-                                ui-sref="frontend.products.view({id:product.id})">Read more ..</a>
+                                ui-sref="frontend.advertisements.view({id:item.id})">Read more ..</a>
                         </p>
                     </div>
                 </div>

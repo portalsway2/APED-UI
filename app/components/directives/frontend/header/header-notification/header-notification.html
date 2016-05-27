@@ -76,7 +76,8 @@
     <!-- /.dropdown -->
     <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown">
-            <i class="fa fa fa-shopping-cart"></i> <i class="fa fa-caret-down"></i>
+            <span class="label label-danger">{{basket.listItems.length}}</span><i class="fa fa fa-shopping-cart"></i> <i
+                class="fa fa-caret-down"></i>
         </a>
         <ul class="dropdown-menu dropdown-tasks">
             <li>
@@ -103,7 +104,7 @@
                     <div>
                         <p>
                             <strong>Total Items</strong>
-                            <span class="pull-right text-muted">{{basket.numberItems}} </span>
+                            <span class="pull-right text-muted">{{basket.listItems.length}} </span>
                             <span class="sr-only">Items</span>
                         </p>
 
@@ -118,10 +119,27 @@
             </li>
             <li class="divider"></li>
 
+            <li>
+                <a ng-click=basketTruncate()>
+                    <div>
+                        <p>
+                            <strong>Empty the basket</strong>
+                            <span class="pull-right text-muted"> </span>
+                            <span class="sr-only">Items</span>
+                        </p>
 
+                        <!--<div class="progress progress-striped active">-->
+                        <!--<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20"-->
+                        <!--aria-valuemin="0" aria-valuemax="100" style="width: 20%">-->
+                        <!--<span class="sr-only">20% Complete</span>-->
+                        <!--</div>-->
+                        <!--</div>-->
+                    </div>
+                </a>
+            </li>
             <li class="divider"></li>
             <li>
-                <a class="text-center" href="#">
+                <a class="text-center" ui-sref="frontend.checkout.step1">
                     <strong>Go to checkout </strong>
                     <i class="fa fa-angle-right"></i>
                 </a>

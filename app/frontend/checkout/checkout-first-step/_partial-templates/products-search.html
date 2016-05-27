@@ -22,6 +22,7 @@
                         <thead>
                         <tr>
                             <th>Name</th>
+                            <th> Description</th>
                             <th>Price</th>
                             <th class="col-sm-1"></th>
                         </tr>
@@ -30,7 +31,8 @@
 
                         <tr class="gradeC" ng-repeat="item in basket.listItems">
                             <td>{{item.name}}</td>
-                            <td>{{item.price}}</td>
+                            <td>{{item.description| cut:true:50}}</td>
+                            <td><span class="pull-right">{{item.price}} $</span></td>
                             <td>
 
 
@@ -44,8 +46,22 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td>Total</td>
-                            <td>{{basket.totalPrice }}</td>
+                            <td><span class="pull-right">Total</span></td>
+                            <td><span class="pull-right">{{basket.totalPrice  }} $</span></td>
+
+                            <td></td>
+                        </tr>
+                        <tr ng-if="basket.shippingMethod.configuration && basket.shippingMethod.id">
+                            <td></td>
+                            <td><span class="pull-right">Shipping</span></td>
+                            <td><span class="pull-right">{{basket.shippingMethod.configuration }} $</span></td>
+                            <td></td>
+                        </tr>
+                        <tr ng-if="basket.shippingMethod.configuration && basket.shippingMethod.id">
+                            <td></td>
+                            <td><span class="pull-right">Total Include Shipping</span></td>
+                            <td><span class="pull-right">{{basket.TotalIncludeShipping }} $</span></td>
+                            <td></td>
                         </tr>
 
                         </tbody>
@@ -55,8 +71,15 @@
 
             </div>
             <div class="col-md-12">
-                <form role="form">
-
+                <form role="form" ng-if="basket.paymentMethod.id">
+                    <h4 class="box-title ng-binding"> Payment Method Selected : <span class="label label-default">{{basket.paymentMethod.name}}</span>
+                    </h4>
+                </form>
+            </div>
+            <div class="col-md-12">
+                <form role="form" ng-if="basket.paymentMethod.id">
+                    <h4 class="box-title ng-binding"> Shipping Method Selected : <span class="label label-default">{{basket.shippingMethod.name}}</span>
+                    </h4>
                 </form>
             </div>
 
@@ -64,8 +87,7 @@
     </div>
     <div class="box-footer" style="display: block;">
         <p class="pull-right">
-            <button type="button" class="btn btn-primary" ui-sref="frontend.checkout.step2">Next Step
-            </button>
+
 
         </p>
     </div>

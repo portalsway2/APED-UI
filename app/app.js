@@ -54,6 +54,7 @@ var APEDevices = angular.module('APEDevices', [
             , 'frontend-module.user.profile'
             , 'frontend-module.compare'
             , 'frontend-module.checkout'
+            , 'paymentmethod-paymentmethods'
             , 'payment-payments'
             , 'shipping-shippings'
             , 'loginuser'
@@ -144,6 +145,9 @@ var APEDevices = angular.module('APEDevices', [
                         totalPrice: 0,
                         listItems: []
                     }
+                }
+                $rootScope.basketTruncate = function () {
+                    $rootScope.basket = localStorage.removeItem("basket");
                 }
                 console.log($rootScope.basket)
                 if ($cookieStore.get('_session')) {

@@ -1,15 +1,15 @@
 'use strict';
 angular.module('frontend-module.checkout')
     .config(['$stateProvider', function ($stateProvider) {
-        $stateProvider.state('frontend.checkout.step2', {
-            url: '/step/2',
-            templateUrl: 'frontend/checkout/checkout-second-step/checkout-step2.html',
-            controller: 'Checkout2ViewController',
+        $stateProvider.state('frontend.checkout.step3', {
+            url: '/step/3',
+            templateUrl: 'frontend/checkout/checkout-third-step/checkout-step3.html',
+            controller: 'Checkout3ViewController',
             userNotAuthenticated: true,
             resolve: {
-                _shipping: [
-                    'ShippingShippings', '$stateParams',
-                    function (ShippingShippings, $stateParams) {
+                _paymentMethod: [
+                    'PaymentmethodPaymentmethods', '$stateParams',
+                    function (PaymentmethodPaymentmethods, $stateParams) {
                         var page = $stateParams.page ? $stateParams.page : 1;
                         var perPage = $stateParams.perPage ? $stateParams.perPage : 4;
 
@@ -19,7 +19,7 @@ angular.module('frontend-module.checkout')
                             'per-page': perPage,
                             page: page
                         };
-                        return ShippingShippings.getList(FiltersShippings);
+                        return PaymentmethodPaymentmethods.getList(FiltersShippings);
                     }
                 ],
                 basketObject: [ function () {
@@ -38,36 +38,36 @@ angular.module('frontend-module.checkout')
             }
         });
     }])
-    .controller('Checkout2ViewController',
-        ['$rootScope', '$scope', '$modal', '$state', '$timeout', 'basketObject', '_shipping',
-            function ($rootScope, $scope, $modal, $state, $timeout, basketObject, _shipping) {
-                $rootScope.nameStep = "Shipping Methods";
-                $rootScope.nextStep = "frontend.checkout.step3";
-                $rootScope.previousStep = "frontend.checkout.step1";
-                $scope._shipping = _shipping.data;
+    .controller('Checkout3ViewController',
+        ['$rootScope', '$scope', '$modal', '$state', '$timeout', 'basketObject', '_paymentMethod',
+            function ($rootScope, $scope, $modal, $state, $timeout, basketObject, _paymentMethod) {
+                $rootScope.nameStep = "Payment Methods";
+                $rootScope.nextStep = null;
+                $rootScope.previousStep = "frontend.checkout.step2";
 
                 $rootScope.goPreviousStep = function () {
                     $state.transitionTo($rootScope.previousStep)
-                };
+                }
                 $rootScope.goNextStep = function () {
                     $state.transitionTo($rootScope.nextStep)
-                };
-                $scope.mehtodSelected = {};
-                if ($scope.basket.shippingMethod) {
-                    $scope.mehtodSelected = $scope.basket.shippingMethod;
                 }
 
+                $scope._paymentMethod = _paymentMethod.data;
 
-                $scope.selectShipping = function (shipping) {
-                    $scope.mehtodSelected = shipping;
-                    addShippingMethod()
+
+                $scope.paymentMethodSelected = {};
+                if ($scope.basket.paymentMethod) {
+                    $scope.paymentMethodSelected = $scope.basket.paymentMethod
+                }
+                $scope.selectMethodSelected = function (pay) {
+                    $scope.paymentMethodSelected = pay;
+                    addPaymentMethod()
                 };
-                function addShippingMethod() {
+                function addPaymentMethod() {
 
-                    $scope.basket.shippingMethod = $scope.mehtodSelected;
-                    $scope.basket.TotalIncludeShipping = $scope.basket.totalPrice + parseFloat($scope.basket.shippingMethod.configuration);
-                    setBasket($scope.basket);
+                    $scope.basket.paymentMethod = $scope.paymentMethodSelected;
                     $rootScope.basket = $scope.basket;
+                    setBasket($scope.basket);
 
 
                 }
@@ -75,7 +75,6 @@ angular.module('frontend-module.checkout')
                 function setBasket(basket) {
                     console.log(basket)
                     localStorage.setItem("basket", JSON.stringify(basket));
-                };
-
+                }
 
             }]);

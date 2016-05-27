@@ -8,18 +8,17 @@ angular.module('frontend-module.checkout')
             userNotAuthenticated: true,
             resolve: {
                 _devices: [
-                    'DeviceDevices', '$stateParams',
-                    function (DeviceDevices, $stateParams) {
+                    'ContentContents', '$stateParams',
+                    function (ContentContents, $stateParams) {
                         var page = $stateParams.page ? $stateParams.page : 1;
                         var perPage = $stateParams.perPage ? $stateParams.perPage : 4;
 
                         var FiltersDevices = {
                             'sort': '-updatedAt',
-                            expand: 'product',
                             'per-page': perPage,
                             page: page
                         };
-                        return DeviceDevices.getList(FiltersDevices);
+                        return ContentContents.getList(FiltersDevices);
                     }
                 ],
                 basketObject: [ function () {
@@ -39,10 +38,19 @@ angular.module('frontend-module.checkout')
         });
     }])
     .controller('Checkout1ViewController',
-        ['$scope', '$modal', '$state', '$timeout', 'basketObject', '_devices',
-            function ($scope, $modal, $state, $timeout, basketObject, _devices) {
-
+        ['$rootScope', '$scope', '$modal', '$state', '$timeout', 'basketObject', '_devices',
+            function ($rootScope, $scope, $modal, $state, $timeout, basketObject, _devices) {
+                $rootScope.nameStep = "Order Details";
+                $rootScope.nextStep = "frontend.checkout.step2";
+                $rootScope.previousStep = null;
                 $scope._devices = _devices.data;
+
+                $rootScope.goPreviousStep = function () {
+                    $state.transitionTo($rootScope.previousStep)
+                }
+                $rootScope.goNextStep = function () {
+                    $state.transitionTo($rootScope.nextStep)
+                }
 
                 $scope.basket = basketObject;
                 $scope.removeItemFromBasket = function (item) {
@@ -55,6 +63,7 @@ angular.module('frontend-module.checkout')
                         }
                     }
                     setBasket($scope.basket);
+                    $rootScope.basket = $scope.basket;
 
 
                 }
