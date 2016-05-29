@@ -25,7 +25,7 @@
     <li ui-sref-active="active"><a ui-sref="frontend.brands.list">Brands</a></li>
     <li ui-sref-active="active"><a ui-sref="frontend.products.list">Products</a></li>
     <li ui-sref-active="active"><a ui-sref="frontend.compare.devices">Compare</a></li>
-    <li><a ui-sref="backend.index">Backend Administrator</a></li>
+    <li ng-if="UserAccount.status <= 3"><a ui-sref="backend.index">Backend Administrator {{UserAccount.status}}</a></li>
     <!--<li class="dropdown">-->
     <!--<a class="dropdown-toggle" data-toggle="dropdown"-->
     <!--role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>-->
