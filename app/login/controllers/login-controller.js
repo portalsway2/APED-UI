@@ -21,9 +21,9 @@ angular.module('loginuser')
         ;
     }])
 
-    .controller('LoginController', ['$scope', '$rootScope', 'AUTH_EVENTS', 'AuthService', '$state', '$http', 'CustomerPassword', 'growl',
+    .controller('LoginController', ['$scope', '$rootScope', 'AUTH_EVENTS', 'API_CONFIG', 'AuthService', '$state', '$http', 'CustomerPassword', 'growl',
         '$location', 'API_LOGIN_CONFIG', '_customer',
-        function ($scope, $rootScope, AUTH_EVENTS, AuthService, $state, $http, CustomerPassword, growl, $location, API_LOGIN_CONFIG, _customer) {
+        function ($scope, $rootScope, AUTH_EVENTS, API_CONFIG, AuthService, $state, $http, CustomerPassword, growl, $location, API_LOGIN_CONFIG, _customer) {
 
             $scope.newUser = _customer.data;
             $scope.loginPage = "login";
@@ -38,17 +38,46 @@ angular.module('loginuser')
             $scope.saveNewCustomerInServer = function () {
                 $rootScope.inscriptionSuccess = null;
                 $rootScope.inscriptionFailed = null;
-                $scope.newUser.post("signup").then(
-                    function (res) {
+                postNewUser();
+
+
+            };
+            function postNewUser() {
+                var urlFile = API_CONFIG.baseUrl + "customer/customers/signup";
+                var userData = {
+                    email: $scope.newUser.email,
+                    username: $scope.newUser.username,
+                    firstName: $scope.newUser.firstName,
+                    lastName: $scope.newUser.lastName,
+                    password: $scope.newUser.password,
+                    password2: $scope.newUser.password2
+
+                }
+                return $.post(urlFile, userData,function (res) {
+                    console.log(res)
+
+
+                }).done(function (res) {
+                        console.log(res)
 
                         $rootScope.inscriptionSuccess = "your account is created successfully " + $scope.newUser.email;
-                    },
-                    function (res) {
-                        $rootScope.inscriptionFailed = res.data.message;
-                        console.log(res)
-                    }
-                )
-            };
+                        $scope.$apply();
+                    })
+                    .fail(function (res) {
+                        var resp = JSON.parse(res.responseText);
+                        console.log(resp)
+                        console.log(resp);
+
+                        $rootScope.inscriptionFailed = resp.message;
+                        $scope.$apply();
+
+                    })
+                    .always(function (res) {
+
+
+                    });
+            }
+
             $rootScope.loginFailed = null;
             $rootScope.sendResetPasswordFailed = null;
             $rootScope.sendResetPasswordSuccess = null;
