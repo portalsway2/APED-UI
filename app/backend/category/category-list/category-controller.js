@@ -7,6 +7,7 @@ angular.module('backend-module.category')
             controller: 'CategoryListController',
             authenticate: true,
             role: "admin",
+            roleUser: 1,
             resolve: {
                 _categories: [
                     'CategoryCategories', '$stateParams',

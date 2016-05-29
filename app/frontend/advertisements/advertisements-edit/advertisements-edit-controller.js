@@ -7,6 +7,7 @@ angular.module('frontend-module.advertisements')
             controller: 'AdvertisementsEditController',
             authenticate: true,
             role: "superUser",
+            roleUser: 10,
             resolve: {
                 _announcement: [
                     'ContentContents', '$stateParams',

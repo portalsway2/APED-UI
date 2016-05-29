@@ -4,7 +4,7 @@ angular.module('authentication', [])
             $rootScope.UserRolesList = [
                 {
                     id: 1,
-                    nameRole: "User"
+                    nameRole: "Admin"
                 },
                 {
                     id: 2,
@@ -12,12 +12,13 @@ angular.module('authentication', [])
                 },
                 {
                     id: 3,
-                    nameRole: "Client"
+                    nameRole: "User"
                 },
                 {
-                    id: 4,
+                    id: 10,
                     nameRole: "Visitor"
                 }
+
 
             ]
             $rootScope.logout = function () {
@@ -138,19 +139,44 @@ angular.module('authentication', [])
 
 
                     } else {
-                        if (authorizationHeader.enabled) {
-                            Restangular.setDefaultRequestParams({tenantId: $cookieStore.get('_session').tenantId});
-                            Restangular.setDefaultHeaders({'Authorization': 'Bearer ' + $cookieStore.get('_session').accessToken });
-                        } else {
-                            Restangular.setDefaultRequestParams({accessToken: $cookieStore.get('_session').accessToken, tenantId: $cookieStore.get('_session').tenantId});
-                            API_CONFIG.accessToken = $cookieStore.get('_session').accessToken;
-                            API_CONFIG.tenantId = $cookieStore.get('_session').tenantId;
-                        }
+                        if (to.roleUser) {
 
-                        if (to.name == API_LOGIN_CONFIG.loginState) {
-                            $state.transitionTo(API_LOGIN_CONFIG.dashboardState);
-                            $rootScope.isLoading = false;
-                            event.preventDefault();
+
+                            if ($rootScope.UserAccount.status <= to.roleUser) {
+                                if (authorizationHeader.enabled) {
+                                    Restangular.setDefaultRequestParams({tenantId: $cookieStore.get('_session').tenantId});
+                                    Restangular.setDefaultHeaders({'Authorization': 'Bearer ' + $cookieStore.get('_session').accessToken });
+                                } else {
+                                    Restangular.setDefaultRequestParams({accessToken: $cookieStore.get('_session').accessToken, tenantId: $cookieStore.get('_session').tenantId});
+                                    API_CONFIG.accessToken = $cookieStore.get('_session').accessToken;
+                                    API_CONFIG.tenantId = $cookieStore.get('_session').tenantId;
+                                }
+
+                                if (to.name == API_LOGIN_CONFIG.loginState) {
+                                    $state.transitionTo(API_LOGIN_CONFIG.dashboardState);
+                                    $rootScope.isLoading = false;
+                                    event.preventDefault();
+                                }
+                            } else {
+                                $state.transitionTo(API_LOGIN_CONFIG.dashboardState);
+                                $rootScope.isLoading = false;
+                                event.preventDefault();
+                            }
+                        } else {
+                            if (authorizationHeader.enabled) {
+                                Restangular.setDefaultRequestParams({tenantId: $cookieStore.get('_session').tenantId});
+                                Restangular.setDefaultHeaders({'Authorization': 'Bearer ' + $cookieStore.get('_session').accessToken });
+                            } else {
+                                Restangular.setDefaultRequestParams({accessToken: $cookieStore.get('_session').accessToken, tenantId: $cookieStore.get('_session').tenantId});
+                                API_CONFIG.accessToken = $cookieStore.get('_session').accessToken;
+                                API_CONFIG.tenantId = $cookieStore.get('_session').tenantId;
+                            }
+
+                            if (to.name == API_LOGIN_CONFIG.loginState) {
+                                $state.transitionTo(API_LOGIN_CONFIG.dashboardState);
+                                $rootScope.isLoading = false;
+                                event.preventDefault();
+                            }
                         }
 
 

@@ -61,6 +61,7 @@ var APEDevices = angular.module('APEDevices', [
             , 'authentication'
             , 'settings-settings'
             , 'customer-password'
+            , 'customer-customers'
 
 
         ])

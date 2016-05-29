@@ -7,6 +7,7 @@ angular.module('backend-module.brand')
             controller: 'BrandListController',
             authenticate: true,
             role: "admin",
+            roleUser: 3,
             resolve: {
                 _brands: [
                     'BrandBrands', '$stateParams',

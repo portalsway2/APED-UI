@@ -6,6 +6,7 @@ angular.module('backend-module.brand')
             templateUrl: 'backend/brand/brand-edit/brand-edit.html',
             controller: 'BrandEditController',
             authenticate: true,
+            roleUser: 3,
             role: "admin",
             resolve: {
                 _brand: [

@@ -4,6 +4,7 @@ angular.module('backend-module', ['backend-module.dashboard2'])
         $stateProvider.state('backend', {
             abstract: true,
             url: '/backend',
+            roleUser: 3,
             templateUrl: 'templates/backend/main.html',
             resolve: {
                 loadMyDirectives: function ($ocLazyLoad) {

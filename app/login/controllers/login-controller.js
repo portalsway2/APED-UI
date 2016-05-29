@@ -6,15 +6,49 @@ angular.module('loginuser')
                 userAuthenticated: false,
                 url: '',
                 templateUrl: 'login/templates/login-view.html',
-                controller: 'LoginController'
+                controller: 'LoginController',
+                resolve: {
+                    _customer: [
+                        'CustomerCustomers', '$stateParams',
+                        function (CustomerCustomers, $stateParams) {
+
+                            return  {data: CustomerCustomers.one()};
+
+                        }
+                    ]
+                }
             })
         ;
     }])
 
     .controller('LoginController', ['$scope', '$rootScope', 'AUTH_EVENTS', 'AuthService', '$state', '$http', 'CustomerPassword', 'growl',
-        '$location', 'API_LOGIN_CONFIG',
-        function ($scope, $rootScope, AUTH_EVENTS, AuthService, $state, $http, CustomerPassword, growl, $location, API_LOGIN_CONFIG) {
+        '$location', 'API_LOGIN_CONFIG', '_customer',
+        function ($scope, $rootScope, AUTH_EVENTS, AuthService, $state, $http, CustomerPassword, growl, $location, API_LOGIN_CONFIG, _customer) {
 
+            $scope.newUser = _customer.data;
+            $scope.loginPage = "login";
+            $scope.goToInscription = function () {
+
+                $scope.loginPage = 'inscription';
+            }
+            $scope.goToLogin = function () {
+
+                $scope.loginPage = 'login';
+            }
+            $scope.saveNewCustomerInServer = function () {
+                $rootScope.inscriptionSuccess = null;
+                $rootScope.inscriptionFailed = null;
+                $scope.newUser.post("signup").then(
+                    function (res) {
+
+                        $rootScope.inscriptionSuccess = "your account is created successfully " + $scope.newUser.email;
+                    },
+                    function (res) {
+                        $rootScope.inscriptionFailed = res.data.message;
+                        console.log(res)
+                    }
+                )
+            };
             $rootScope.loginFailed = null;
             $rootScope.sendResetPasswordFailed = null;
             $rootScope.sendResetPasswordSuccess = null;

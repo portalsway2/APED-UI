@@ -5,10 +5,11 @@ angular.module('backend-module.user')
             url: '/list?nameSearch&perPage&page',
             templateUrl: 'backend/user/user-list/user.html',
             controller: 'UserListController',
+            roleUser: 1,
             resolve: {
                 _users: [
-                    'UserUsers', '$stateParams',
-                    function (UserUsers, $stateParams) {
+                    'CustomerCustomers', '$stateParams',
+                    function (CustomerCustomers, $stateParams) {
                         var page = $stateParams.page ? $stateParams.page : 1;
                         var perPage = $stateParams.perPage ? $stateParams.perPage : 4;
 
@@ -18,7 +19,7 @@ angular.module('backend-module.user')
                             'per-page': perPage,
                             page: page
                         };
-                        return UserUsers.getList(FiltersUsers);
+                        return CustomerCustomers.getList(FiltersUsers);
                     }
                 ]
             }
@@ -49,6 +50,12 @@ angular.module('backend-module.user')
 
                 };
 
+                $scope.saveUserRole = function (user) {
+
+                    user.save().then(function () {
+                        $scope.userSaved = user.email + ' is saved successfully '
+                    });
+                }
                 $scope.pageChanged = function () {
 
                     goToUsersList()

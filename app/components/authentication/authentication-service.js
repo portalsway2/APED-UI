@@ -1,100 +1,101 @@
 angular.module('authentication')
-    .factory('AuthService', ['$http', 'Session', 'API_LOGIN_CONFIG', '$rootScope','$cookieStore',
-        function ($http, Session, API_LOGIN_CONFIG, $rootScope,$cookieStore) {
-        var authService = {};
-        var urlFile = API_LOGIN_CONFIG.urlLoginFile;
-        authService.login = function (credentials) {
-            return $.post(urlFile, {
-                client_id:"testclient",
-                client_secret:"testpass",
-                grant_type:"password",
-                username: credentials.username,
-                password: credentials.password
+    .factory('AuthService', ['$http', 'Session', 'API_LOGIN_CONFIG', '$rootScope', '$cookieStore',
+        function ($http, Session, API_LOGIN_CONFIG, $rootScope, $cookieStore) {
+            var authService = {};
+            var urlFile = API_LOGIN_CONFIG.urlLoginFile;
+            authService.login = function (credentials) {
+                return $.post(urlFile, {
+                    client_id: "testclient",
+                    client_secret: "testpass",
+                    grant_type: "password",
+                    username: credentials.username,
+                    password: credentials.password
 
 
-            }, function (res) {
-                console.log(res)
-                if (res.status == 401) {
+                },function (res) {
+                    console.log(res)
+                    if (res.status == 401) {
+                        Session.destroy();
+                    } else {
+
+                        Session.create(
+                            5,
+                            5,
+                            "admin",
+                            res.access_token,
+                            res.expires_in,
+                            res.token_type,
+                            res.scope,
+                            res.refresh_token,
+                            res.tenant_id,
+                            res.domain_name
+                        );
+                        var userProfile = {
+                            id: res.user.id,
+                            email: res.user.email,
+                            username: res.user.username,
+                            firstName: res.user.firstName,
+                            lastName: res.user.lastName,
+                            active: res.user.active,
+                            blocked: res.user.blocked,
+                            status: res.user.status
+
+                        };
+                        $rootScope.UserAccount = userProfile;
+                        $cookieStore.put('userProfile', userProfile);
+
+                    }
+
+                }).done(function (res) {
+
+                    })
+                    .fail(function (res) {
+                        Session.destroy();
+
+                    })
+                    .always(function (res) {
+                        $rootScope.isLoading = false;
+
+                    });
+
+
+            };
+
+            authService.logout = function () {
+                return $.post(urlFile, {username: null, password: null},function (res) {
+
+
+                }).done(function (res) {
+
+                    })
+                    .fail(function (res) {
+
+
+                    })
+                    .always(function (res) {
+                        Session.destroy();
+                    });
+
+            };
+            authService.isAuthenticated = function () {
+
+                if (!Session.validateUser()) {
                     Session.destroy();
-                } else {
-
-                    Session.create(
-                        5,
-                        5,
-                        "admin",
-                        res.access_token,
-                        res.expires_in,
-                        res.token_type,
-                        res.scope,
-                        res.refresh_token,
-                        res.tenant_id,
-                        res.domain_name
-                    );
-                    var userProfile = {
-                        id: res.user.id,
-                        email: res.user.email,
-                        username: res.user.username,
-                        firstName: res.user.firstName,
-                        lastName: res.user.lastName,
-                        active: res.user.active,
-                        blocked: res.user.blocked
-
-                    };
-                    $rootScope.UserAccount = userProfile;
-                    $cookieStore.put('userProfile', userProfile);
-                   console.log(98656)
+                    $rootScope.currentUser = null;
                 }
+                return Session.validateUser();
+            };
 
-            }).done(function (res) {
+            authService.isAuthorized = function (authorizedRoles) {
+                if (!angular.isArray(authorizedRoles)) {
+                    authorizedRoles = [authorizedRoles];
+                }
+                return (authService.isAuthenticated() &&
+                    authorizedRoles.indexOf(Session.userRole) !== -1);
+            };
 
-                })
-                .fail(function (res) {
-                    Session.destroy();
-
-                })
-                .always(function (res) {
-                    $rootScope.isLoading = false;
-
-                });
-
-
-        };
-
-        authService.logout = function () {
-            return $.post(urlFile, {username: null, password: null}, function (res) {
-
-
-            }).done(function (res) {
-
-                })
-                .fail(function (res) {
-
-
-                })
-                .always(function (res) {
-                    Session.destroy();
-                });
-
-        };
-        authService.isAuthenticated = function () {
-
-            if (!Session.validateUser()) {
-                Session.destroy();
-                $rootScope.currentUser = null;
-            }
-            return Session.validateUser();
-        };
-
-        authService.isAuthorized = function (authorizedRoles) {
-            if (!angular.isArray(authorizedRoles)) {
-                authorizedRoles = [authorizedRoles];
-            }
-            return (authService.isAuthenticated() &&
-            authorizedRoles.indexOf(Session.userRole) !== -1);
-        };
-
-        return authService;
-    }])
+            return authService;
+        }])
 ;
 
 (function (exports) {
