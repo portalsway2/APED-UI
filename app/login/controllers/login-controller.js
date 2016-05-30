@@ -65,8 +65,7 @@ angular.module('loginuser')
                     })
                     .fail(function (res) {
                         var resp = JSON.parse(res.responseText);
-                        console.log(resp)
-                        console.log(resp);
+
 
                         $rootScope.inscriptionFailed = resp.message;
                         $scope.$apply();

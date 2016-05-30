@@ -24,11 +24,24 @@ angular.module('frontend-module.advertisements')
         });
     }])
     .controller('AdvertisementsViewController',
-        ['$scope', '$modal', '$state', '$timeout', '_announcement', 'growl', '$rootScope',
-            function ($scope, $modal, $state, $timeout, _announcement, growl, $rootScope) {
+        ['$scope', '$modal', '$state', '$timeout', '_announcement', 'growl', '$rootScope', 'NotificationNotifications',
+            function ($scope, $modal, $state, $timeout, _announcement, growl, $rootScope, NotificationNotifications) {
 
                 $scope.announcement = _announcement.data;
 
+                $scope.visitNotification = {data: NotificationNotifications.one()};
+                var visitorName = "anonymous";
+                if ($rootScope.UserAccount.id) {
+                    $scope.visitNotification.data.sender = $rootScope.UserAccount.id;
+                    visitorName = $rootScope.UserAccount.firstName + " " + $rootScope.UserAccount.lastName;
+                }
+
+                $scope.visitNotification.data.receiver = $scope.announcement.ownerId;
+                $scope.visitNotification.data.name = "visit";
+                $scope.visitNotification.data.description = "  visited your ad  ";
+                $scope.visitNotification.data.type = $scope.announcement.id;
+                console.log($scope.visitNotification)
+                $scope.visitNotification.data.save();
 
                 $scope.addToBasket = function () {
 
@@ -46,6 +59,22 @@ angular.module('frontend-module.advertisements')
                     }
 
                     if (!productFound) {
+
+
+                        $scope.basketNotification = {data: NotificationNotifications.one()};
+                        var visitorName = "anonymous";
+                        if ($rootScope.UserAccount.id) {
+                            $scope.basketNotification.data.sender = $rootScope.UserAccount.id;
+                            visitorName = $rootScope.UserAccount.firstName + " " + $rootScope.UserAccount.lastName;
+                        }
+
+                        $scope.basketNotification.data.receiver = $scope.announcement.ownerId;
+                        $scope.basketNotification.data.name = "basket";
+                        $scope.basketNotification.data.description = "  add your ad to his basket  ";
+                        $scope.basketNotification.data.type = $scope.announcement.id;
+                        $scope.basketNotification.data.save();
+
+
                         basket.listItems.push($scope.announcement);
                         basket.numberItems += 1;
                         basket.totalPrice += parseFloat($scope.announcement.price);

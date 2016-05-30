@@ -4,9 +4,42 @@ angular.module('frontend-module', ["frontend-module.dashboard"])
         $stateProvider.state('frontend', {
             abstract: true,
             url: '/frontend',
-            userNotAuthenticated:true,
+            userNotAuthenticated: true,
             templateUrl: 'templates/frontend/main.html',
             resolve: {
+                _notification: [
+                    'NotificationNotifications', '$stateParams', '$state', '$rootScope',
+                    function (NotificationNotifications, $stateParams, $state, $rootScope) {
+                        if ($rootScope.UserAccount.id) {
+                            var page = 1;
+                            var perPage = 400;
+
+                            var FiltersInstantSearch = {
+                                'sort': '-updatedAt',
+                                expand: '',
+                                'per-page': perPage,
+                                page: page
+                            };
+                            FiltersInstantSearch = $.extend(FiltersInstantSearch,
+                                {
+                                    'query[2][type]': "like",
+                                    'query[2][field]': "receiver",
+                                    'query[2][value]': $rootScope.UserAccount.id
+                                }
+                            );
+
+
+                            return NotificationNotifications.getList(
+                                FiltersInstantSearch
+                            );
+                        } else {
+                            return {data: []}
+                        }
+
+
+                    }
+                ],
+
                 loadMyDirectives: function ($ocLazyLoad) {
                     return $ocLazyLoad.load(
 
